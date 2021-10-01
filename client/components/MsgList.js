@@ -17,6 +17,7 @@ const originalMsgs = Array(50)
       text: `mock-${i + 1}`,
     };
   });
+console.log(JSON.stringify(originalMsgs));
 
 // const msgs = [{
 //     id: 1,
