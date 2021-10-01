@@ -29,11 +29,11 @@ const getRandomUserId = () => {
 //     text: 'mock-1'
 // }]
 
-const MsgList = () => {
+const MsgList = ({ smsgs, users }) => {
   const {
     query: { userId = "" },
   } = useRouter();
-  const [msgs, setMsgs] = useState([]);
+  const [msgs, setMsgs] = useState(smsgs);
   const [editingId, setEditingId] = useState(null);
   const fetchMoreEl = useRef(null);
   const intersecting = useInfiniteScroll(fetchMoreEl);
@@ -93,6 +93,7 @@ const MsgList = () => {
     }
     setMsgs((msgs) => [...msgs, ...newMsgs]);
   };
+  console.log("render");
 
   useEffect(() => {
     if (intersecting && hasNext) getMsgs();
@@ -112,6 +113,7 @@ const MsgList = () => {
               startEdit={() => setEditingId(msg.id)}
               onDelete={() => onDelete(msg.id)}
               me={userId}
+              user={users[msg.userId]}
             />
           );
         })}
