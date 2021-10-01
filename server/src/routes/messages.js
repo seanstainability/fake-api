@@ -56,7 +56,7 @@ const messagesRoute = [
         const newMsg = { ...msgs[targetIdx], text: body.text };
         msgs.splice(targetIdx, 1, newMsg);
         setMsgs(msgs);
-        res.send(msgs);
+        res.send(newMsg);
       } catch (err) {
         res.status(500).send({ error: err });
       }
@@ -65,16 +65,17 @@ const messagesRoute = [
   {
     method: "delete",
     route: "/messages/:id",
-    handler: ({ body, params: { id } }, res) => {
+    handler: ({ params: { id }, query: { userId } }, res) => {
       try {
         const msgs = getMsgs();
         const targetIdx = msgs.findIndex((msg) => msg.id === id);
         if (targetIdx < 0) throw "메시지가 없습니다";
-        if (msgs[targetIdx].userId !== body.userId) throw "사용자가 다릅니다";
+        if (msgs[targetIdx].userId !== userId) throw "사용자가 다릅니다";
         msgs.splice(targetIdx, 1);
         setMsgs(msgs);
         res.send(id);
       } catch (err) {
+        console.error(err);
         res.status(500).send({ error: err });
       }
     },
